@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BsFillTrashFill, BsFillCircleFill, BsCheckCircleFill } from 'react-icons/bs'
 import { FaEdit } from 'react-icons/fa'
+import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md'
+import { GiBowTieRibbon } from 'react-icons/gi'
 
 function Todo() {
 
@@ -9,6 +11,7 @@ function Todo() {
     const [task, setTask] = useState('');
     const [id, setId] = useState('');
     const [eBox, setEBox] = useState(false);
+    const [isMode, setIsMode] = useState('light');
 
     useEffect(()=>{
         axios.get('http://localhost:3001/get')
@@ -67,8 +70,17 @@ function Todo() {
         .catch(err => console.log(err));
     }
 
+    const changeMode = () => {
+        setIsMode(isMode === 'light' ? 'dark' : isMode === 'dark'? 'purple' : 'light');
+        console.log('mode');
+    }
+
   return (
-    <div className='todo'>
+    <div className='todo' app-theme={isMode}>
+        { isMode === 'purple' &&
+            <span className='ribbon'> <GiBowTieRibbon/> </span>
+        }
+        <span className='mode' onClick={changeMode}>{isMode === 'dark' ? <MdDarkMode/> : <MdOutlineDarkMode/> }</span>
         <h1>To-do List</h1>
         <div className='input-box'>
             <input type='text' id='task' placeholder='Enter a task' 
